@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "tv-series-app",
+    "slug": "tv-series-app",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
