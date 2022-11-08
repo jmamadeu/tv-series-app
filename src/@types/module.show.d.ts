@@ -3,13 +3,8 @@ declare namespace Module {
     type Type = {
       id: number;
       name: string;
-      _embedded: {
-        show: {
-          image: {
-            medium: string;
-          };
-        };
-      };
+      description: string;
+      image: string;
     };
   }
 }

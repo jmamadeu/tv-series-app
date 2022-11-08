@@ -1,26 +1,29 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, StyleSheet, Text } from "react-native";
 
 import { theme } from "../../theme/theme";
 
 type SerieCardProps = {
-  imgUrl: string;
-  title: string;
+  data: Module.Show.Type;
+  onPress: () => void;
 };
 
-export const SerieCard: React.FC<SerieCardProps> = ({ imgUrl, title }) => {
+export const SerieCard: React.FC<SerieCardProps> = ({
+  data: { name, image },
+  onPress
+}) => {
   return (
-    <View style={styles.movieCard}>
+    <Pressable style={styles.movieCard} onPress={onPress}>
       <Image
         source={{
-          uri: imgUrl,
+          uri: image
         }}
         style={styles.cardImage}
       />
 
       <Text numberOfLines={1} style={styles.cardTitle}>
-        {title}
+        {name}
       </Text>
-    </View>
+    </Pressable>
   );
 };
 
@@ -31,13 +34,13 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.gray[200],
     borderRadius: 28,
     width: "48%",
-    margin: 5,
+    margin: 5
   },
   cardImage: {
     borderTopEndRadius: 28,
     borderTopLeftRadius: 28,
 
-    height: 200,
+    height: 200
   },
   cardTitle: {
     textAlign: "center",
@@ -45,6 +48,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     marginTop: 6,
     color: theme.colors.white,
-    paddingHorizontal: 10,
-  },
+    paddingHorizontal: 10
+  }
 });

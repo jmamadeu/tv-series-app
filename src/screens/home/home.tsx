@@ -1,5 +1,5 @@
-/* eslint-disable prettier/prettier */
 import { Feather } from "@expo/vector-icons";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import {
   FlatList,
   SafeAreaView,
@@ -10,16 +10,13 @@ import {
 } from "react-native";
 
 import { SerieCard } from "../../components/serie-card/serie-card";
+import type { StackParamsList } from "../../routes/routes";
 import { useApiFetchShows } from "../../services/api/shows/use-api-fetch-shows";
 import { theme } from "../../theme/theme";
 
-const ItemSeparatorComponent = () => {
-  return (
-    <View style={{ height: 10, width: 10 }} />
-  )
-}
+type Props = NativeStackScreenProps<StackParamsList, "Home">;
 
-export const HomeScreen = () => {
+export const HomeScreen = ({ navigation }: Props) => {
   const { data: shows } = useApiFetchShows();
 
   return (
@@ -49,17 +46,20 @@ export const HomeScreen = () => {
         </View>
 
         <View style={styles.seriesView}>
-        <Text style={[styles.whiteText, styles.seriesText]}>Series</Text>
+          <Text style={[styles.whiteText, styles.seriesText]}>Series</Text>
           <View style={styles.seriesList}>
             <FlatList
               numColumns={2}
               data={shows}
               keyExtractor={(key) => String(key.id)}
-              // ItemSeparatorComponent={ItemSeparatorComponent}
-              renderItem={({ item }) => (
+              renderItem={({ item: show }) => (
                 <SerieCard
-                  imgUrl={item._embedded.show.image?.medium}
-                  title={item.name}
+                  onPress={() => {
+                    navigation.push("Show", {
+                      show
+                    });
+                  }}
+                  data={show}
                 />
               )}
             />
@@ -73,27 +73,27 @@ export const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.dark[100],
+    backgroundColor: theme.colors.dark[100]
   },
   contentContainer: {
     flex: 1,
-    paddingHorizontal: 5,
+    paddingHorizontal: 5
   },
   whiteText: {
-    color: theme.colors.white,
+    color: theme.colors.white
   },
   helloText: {
     fontWeight: "600",
-    fontSize: 24,
+    fontSize: 24
   },
   helperText: {
     fontWeight: "500",
     fontSize: 14,
     color: theme.colors.gray[100],
-    marginTop: 4,
+    marginTop: 4
   },
   searchInputContainer: {
-    marginTop: 16,
+    marginTop: 16
   },
   inputContainer: {
     backgroundColor: theme.colors.gray[1000],
@@ -101,10 +101,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    borderRadius: 16,
+    borderRadius: 16
   },
   searchIcon: {
-    paddingLeft: 16,
+    paddingLeft: 16
   },
   input: {
     flex: 1,
@@ -112,16 +112,16 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     height: 52,
     fontWeight: "500",
-    fontSize: 14,
+    fontSize: 14
   },
   seriesView: {
     flex: 1,
-    marginTop: 16,
+    marginTop: 16
   },
   seriesText: {
-    fontSize: 24,
+    fontSize: 24
   },
   seriesList: {
-    marginTop: 8,
-  },
+    marginTop: 8
+  }
 });

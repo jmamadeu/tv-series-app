@@ -7,14 +7,11 @@ const fetchShows = async () => {
     "/schedule/web"
   );
 
-  const parsedDate = response.data.map((show) => ({
+  const parsedDate: Array<Module.Show.Type> = response.data.map((show) => ({
     id: show.id,
     name: show.name,
-    _embedded: {
-      show: {
-        image: show._embedded.show.image,
-      },
-    },
+    image: show._embedded.show.image.medium,
+    description: show._embedded.show.summary
   }));
 
   return parsedDate;
