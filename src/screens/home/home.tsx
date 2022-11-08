@@ -1,16 +1,27 @@
+/* eslint-disable prettier/prettier */
+import { Feather } from "@expo/vector-icons";
 import {
+  FlatList,
   SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
   View
 } from "react-native";
+
+import { SerieCard } from "../../components/serie-card/serie-card";
+import { useApiFetchShows } from "../../services/api/shows/use-api-fetch-shows";
 import { theme } from "../../theme/theme";
 
-import { Feather } from "@expo/vector-icons";
-import { SerieCard } from "../../components/serie-card/serie-card";
+const ItemSeparatorComponent = () => {
+  return (
+    <View style={{ height: 10, width: 10 }} />
+  )
+}
 
 export const HomeScreen = () => {
+  const { data: shows } = useApiFetchShows();
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.contentContainer}>
@@ -38,10 +49,20 @@ export const HomeScreen = () => {
         </View>
 
         <View style={styles.seriesView}>
-          <Text style={[styles.whiteText, styles.seriesText]}>Series</Text>
-
+        <Text style={[styles.whiteText, styles.seriesText]}>Series</Text>
           <View style={styles.seriesList}>
-            <SerieCard imgUrl="" />
+            <FlatList
+              numColumns={2}
+              data={shows}
+              keyExtractor={(key) => String(key.id)}
+              // ItemSeparatorComponent={ItemSeparatorComponent}
+              renderItem={({ item }) => (
+                <SerieCard
+                  imgUrl={item._embedded.show.image?.medium}
+                  title={item.name}
+                />
+              )}
+            />
           </View>
         </View>
       </View>
@@ -55,7 +76,8 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.dark[100],
   },
   contentContainer: {
-    paddingHorizontal: 12,
+    flex: 1,
+    paddingHorizontal: 5,
   },
   whiteText: {
     color: theme.colors.white,
@@ -93,15 +115,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   seriesView: {
+    flex: 1,
     marginTop: 16,
   },
   seriesText: {
     fontSize: 24,
   },
   seriesList: {
-    flex: 1,
-    flexDirection: "row",
     marginTop: 8,
   },
-  
 });

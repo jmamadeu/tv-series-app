@@ -1,11 +1,13 @@
 import { Image, StyleSheet, Text, View } from "react-native";
+
 import { theme } from "../../theme/theme";
 
 type SerieCardProps = {
   imgUrl: string;
+  title: string;
 };
 
-export const SerieCard: React.FC<SerieCardProps> = ({ imgUrl }) => {
+export const SerieCard: React.FC<SerieCardProps> = ({ imgUrl, title }) => {
   return (
     <View style={styles.movieCard}>
       <Image
@@ -15,8 +17,8 @@ export const SerieCard: React.FC<SerieCardProps> = ({ imgUrl }) => {
         style={styles.cardImage}
       />
 
-      <Text style={styles.cardTitle}>
-        La Casa de Papel
+      <Text numberOfLines={1} style={styles.cardTitle}>
+        {title}
       </Text>
     </View>
   );
@@ -28,14 +30,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: theme.colors.gray[200],
     borderRadius: 28,
-  },
-  serieCard: {
-    borderRadius: 28,
+    width: "48%",
+    margin: 5,
   },
   cardImage: {
     borderTopEndRadius: 28,
     borderTopLeftRadius: 28,
-    width: 170,
+
     height: 200,
   },
   cardTitle: {
@@ -43,6 +44,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "600",
     marginTop: 6,
-    color: theme.colors.white
+    color: theme.colors.white,
+    paddingHorizontal: 10,
   },
 });
