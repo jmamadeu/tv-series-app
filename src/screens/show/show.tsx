@@ -1,17 +1,28 @@
+import { AntDesign } from "@expo/vector-icons";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { LinearGradient } from "expo-linear-gradient";
-import { ImageBackground, StyleSheet, Text, View } from "react-native";
+import {
+  ImageBackground,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View
+} from "react-native";
 
 import type { StackParamsList } from "../../routes/routes";
+import { useApiFetchEpisodesByShowId } from "../../services/api/shows/use-api-fetch-episodes-by-show-id";
 import { theme } from "../../theme/theme";
 
 type Props = NativeStackScreenProps<StackParamsList, "Show">;
 
 export const ShowScreen = ({ route }: Props) => {
   const { show } = route.params;
+  const { data: seasons } = useApiFetchEpisodesByShowId(show.id);
+
+  console.log(seasons);
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <ImageBackground
         source={{
           uri: show.image
@@ -26,7 +37,12 @@ export const ShowScreen = ({ route }: Props) => {
             <Text style={styles.title}>{show.name}</Text>
             <Text style={styles.helper}>
               {new Date(show.premiered).getFullYear()} |{" "}
-              {show.genres.join(", ")} | {show.rating}
+              {show.genres.join(", ")} | {show.rating}{" "}
+              <AntDesign
+                name="star"
+                size={14}
+                color={theme.colors.orange[100]}
+              />
             </Text>
           </View>
         </LinearGradient>
@@ -36,7 +52,9 @@ export const ShowScreen = ({ route }: Props) => {
         <Text style={styles.plot}>Plot</Text>
         <Text style={styles.summary}>{show.description}</Text>
       </View>
-    </View>
+
+      {/* <SectionList sections={seasonsParsed} /> */}
+    </ScrollView>
   );
 };
 
