@@ -3,13 +3,14 @@ declare namespace API {
     type Response = {
       id: number;
       name: string;
-      _embedded: {
-        show: {
-          image: {
-            medium: string;
-          };
-          summary: string;
-        };
+      genres: Array<string>;
+      summary: string;
+      premiered: string;
+      image: {
+        medium: string;
+      };
+      rating: {
+        average: number;
       };
     };
   }

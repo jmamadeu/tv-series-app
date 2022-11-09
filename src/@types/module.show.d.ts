@@ -5,6 +5,9 @@ declare namespace Module {
       name: string;
       description: string;
       image: string;
+      premiered: string;
+      genres: Array<string>;
+      rating: number;
     };
   }
 }
