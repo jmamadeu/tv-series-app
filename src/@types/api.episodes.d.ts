@@ -8,5 +8,10 @@ declare namespace API {
       summary: string;
       image: { medium: string };
     };
+
+    type ParsedResponse = {
+      title: string;
+      data: Array<Module.Episode.Type>;
+    };
   }
 }

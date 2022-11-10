@@ -2,17 +2,12 @@ import { useQuery } from "@tanstack/react-query";
 
 import { apiInstance } from "../api-instance";
 
-type Response = {
-  title: string;
-  data: Array<Module.Episode.Type>;
-};
-
 const fetchEpisodes = async (showId: number) => {
   const response = await apiInstance.get<Array<API.Episode.Response>>(
     `/shows/${showId}/episodes`
   );
 
-  const seasons: Array<Response> = [];
+  const seasons: Array<API.Episode.ParsedResponse> = [];
 
   response.data.forEach(({ id, name, number, image, season, summary }) => {
     const seasonIndex = seasons.findIndex(
