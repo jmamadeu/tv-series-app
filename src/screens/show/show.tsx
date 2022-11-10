@@ -6,13 +6,14 @@ import { useApiFetchEpisodesByShowId } from "../../services/api/shows/use-api-fe
 import { theme } from "../../theme/theme";
 
 import { BannerCard } from "./components/banner-card";
-import { EpisodesSectionList } from "./components/episodes-section-list";
+import { EpisodesContainer } from "./components/episodes-container";
 import { SummaryText } from "./components/summary";
 
 type Props = NativeStackScreenProps<StackParamsList, "Show">;
 
 export const ShowScreen = ({ route }: Props) => {
   const { show } = route.params;
+
   const { data: seasons } = useApiFetchEpisodesByShowId(show.id);
 
   return (
@@ -21,9 +22,7 @@ export const ShowScreen = ({ route }: Props) => {
 
       <SummaryText description={show.description} />
 
-      {seasons?.map((season) => (
-        <EpisodesSectionList season={season} />
-      ))}
+      <EpisodesContainer seasons={seasons} />
     </ScrollView>
   );
 };

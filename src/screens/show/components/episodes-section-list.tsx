@@ -5,10 +5,12 @@ import { theme } from "../../../theme/theme";
 
 type EpisodesSectionListProps = {
   season: API.Episode.ParsedResponse;
+  onEpisodeClick: (episode: Module.Episode.Type) => void;
 };
 
 export const EpisodesSectionList: React.FC<EpisodesSectionListProps> = ({
-  season
+  season,
+  onEpisodeClick
 }) => {
   return (
     <View>
@@ -23,7 +25,13 @@ export const EpisodesSectionList: React.FC<EpisodesSectionListProps> = ({
           showsHorizontalScrollIndicator={false}
           horizontal
           keyExtractor={(item, index) => String(item.id + index)}
-          renderItem={({ item }) => <EpisodeCard key={item.id} data={item} />}
+          renderItem={({ item }) => (
+            <EpisodeCard
+              onPress={() => onEpisodeClick(item)}
+              key={item.id}
+              data={item}
+            />
+          )}
         />
       </View>
     </View>
