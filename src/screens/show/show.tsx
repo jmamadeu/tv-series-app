@@ -2,6 +2,7 @@ import { AntDesign } from "@expo/vector-icons";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { LinearGradient } from "expo-linear-gradient";
 import {
+  FlatList,
   ImageBackground,
   ScrollView,
   StyleSheet,
@@ -9,6 +10,7 @@ import {
   View
 } from "react-native";
 
+import { EpisodeCard } from "../../components/episode-card/episode-card";
 import type { StackParamsList } from "../../routes/routes";
 import { useApiFetchEpisodesByShowId } from "../../services/api/shows/use-api-fetch-episodes-by-show-id";
 import { theme } from "../../theme/theme";
@@ -19,10 +21,8 @@ export const ShowScreen = ({ route }: Props) => {
   const { show } = route.params;
   const { data: seasons } = useApiFetchEpisodesByShowId(show.id);
 
-  console.log(seasons);
-
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <ImageBackground
         source={{
           uri: show.image
@@ -53,7 +53,26 @@ export const ShowScreen = ({ route }: Props) => {
         <Text style={styles.summary}>{show.description}</Text>
       </View>
 
-      {/* <SectionList sections={seasonsParsed} /> */}
+      <View>
+        {seasons?.map((season) => (
+          <View style={styles.seasonContainer}>
+            <Text key={season.title} style={styles.season}>
+              Season - {season.title}
+            </Text>
+
+            <FlatList
+              data={season?.data}
+              contentContainerStyle={{ paddingLeft: 24 }}
+              showsHorizontalScrollIndicator={false}
+              horizontal
+              keyExtractor={(item, index) => String(item.id + index)}
+              renderItem={({ item }) => (
+                <EpisodeCard key={item.id} data={item} />
+              )}
+            />
+          </View>
+        ))}
+      </View>
     </ScrollView>
   );
 };
@@ -100,5 +119,15 @@ const styles = StyleSheet.create({
     color: theme.colors.gray[100],
     fontSize: 12,
     fontWeight: "500"
+  },
+  season: {
+    fontWeight: "500",
+    fontSize: 18,
+    color: theme.colors.white,
+    marginBottom: 8,
+    paddingHorizontal: 24
+  },
+  seasonContainer: {
+    marginVertical: 10
   }
 });
